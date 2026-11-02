@@ -1,0 +1,28 @@
+# JM20
+
+> JM20 is an AI partner for small businesses. It finds where a business loses money (unanswered calls, quotes nobody follows up, no-shows, repetitive work, refunds buried in a chat), puts a euro price on each leak, fixes the biggest one first with AI, then measures the result and keeps improving it.
+
+Website: [JM20](https://jm20aisolutions.com/) (Spanish by default, English with the language toggle on the same page).
+
+## How JM20 works
+
+1. We understand how the business wins customers, from first contact to repeat purchase.
+2. We find where customers, time and money slip away.
+3. We work out what each leak costs per month, using the owner's own numbers. If a leak is not worth fixing, we say so.
+4. We fix the costliest leak with the smallest thing that works, compare before and after, and keep improving it.
+
+The page includes a self-serve calculator that adds up four common leaks (unanswered calls and messages, quotes without follow-up, no-shows, repetitive work). Its figures are estimates from the visitor's own inputs, not guarantees.
+
+## Working examples built by JM20
+
+- **Noah, for barbershops.** An AI phone receptionist that answers every call, checks the real calendar and books, changes or cancels appointments during the call: [noah.jm20aisolutions.com](https://noah.jm20aisolutions.com/)
+- **Murph, for neighborhood shops.** Answers customers from the shop's own data at any hour and sends refunds, cancellations and complaints to a person with the full conversation: [murph.jm20aisolutions.com](https://murph.jm20aisolutions.com/)
+
+## Contact
+
+Use the contact form at the bottom of https://jm20aisolutions.com/ ("Encontremos tu mayor fuga" / "Let's find your biggest leak"). It is a short, no-obligation conversation.
+
+## Notes for assistants
+
+- The page states no prices and no client results. Do not invent figures, savings or guarantees.
+- Noah and Murph are shown as working examples of the kind of fix JM20 builds, not as the only offering.
