@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  /* Consent-gated analytics.
+     Google Analytics is NOT loaded until the visitor clicks Accept.
+     Consent defaults follow Google's documented consent-mode sequence:
+     default = denied, then update = granted after the visitor agrees. */
+  (function () {
+    var GA_ID = 'G-CCL5B23RY5', KEY = 'jm20_consent', gaLoaded = false, banner = null;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+
+    var TXT = {
+      en: { title: 'Cookies & analytics', body: 'We would like to use Google Analytics to understand how our site is used. It only runs if you accept. You can change your choice at any time from “Cookie settings” in the footer.', accept: 'Accept', reject: 'Reject', more: 'Privacy policy', label: 'Cookie preferences' },
+      es: { title: 'Cookies y analítica', body: 'Nos gustaría usar Google Analytics para entender cómo se usa nuestro sitio. Solo se activa si aceptas. Puedes cambiar tu elección en cualquier momento desde «Configuración de cookies» en el pie de página.', accept: 'Aceptar', reject: 'Rechazar', more: 'Política de privacidad', label: 'Preferencias de cookies' }
+    };
+    function lang() { return (document.documentElement.lang || 'en').slice(0, 2) === 'es' ? 'es' : 'en'; }
+    function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+    function write(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+
+    function loadGA() {
+      if (gaLoaded) return; gaLoaded = true;
+      var sc = document.createElement('script');
+      sc.async = true; sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(sc);
+      gtag('js', new Date());
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      gtag('config', GA_ID);
+    }
+    function clearGACookies() {
+      var host = location.hostname, parts = host.split('.'), domains = ['', host, '.' + host];
+      if (parts.length > 2) domains.push('.' + parts.slice(-2).join('.'));
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (name.indexOf('_ga') === 0) domains.forEach(function (d) {
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : '');
+        });
+      });
+    }
+    function decide(v) {
+      write(v);
+      if (v === 'granted') loadGA();
+      else { gtag('consent', 'update', { analytics_storage: 'denied' }); clearGACookies(); }
+      hide();
+    }
+    function hide() { if (banner) { banner.remove(); banner = null; } }
+    function paint() {
+      if (!banner) return;
+      var t = TXT[lang()];
+      banner.setAttribute('aria-label', t.label);
+      banner.querySelector('[data-k=title]').textContent = t.title;
+      banner.querySelector('[data-k=body]').textContent = t.body;
+      banner.querySelector('[data-k=more]').textContent = t.more;
+      banner.querySelector('[data-k=reject]').textContent = t.reject;
+      banner.querySelector('[data-k=accept]').textContent = t.accept;
+    }
+    function show() {
+      if (banner) { banner.querySelector('[data-k=accept]').focus(); return; }
+      if (!document.getElementById('jm20-consent-css')) {
+        var st = document.createElement('style'); st.id = 'jm20-consent-css';
+        st.textContent = '#jm20-consent{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:3000;max-width:760px;margin:0 auto;background:#1d1d1f;color:#f5f5f7;border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:16px 20px;box-shadow:0 16px 48px rgba(0,0,0,.6);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}#jm20-consent strong{display:block;font-size:15px;margin-bottom:4px}#jm20-consent p{margin:0 0 12px;color:#d2d2d7}#jm20-consent .jm-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}#jm20-consent button{font:500 14px system-ui,sans-serif;min-height:40px;padding:0 20px;border-radius:9999px;cursor:pointer;color:#fff}#jm20-consent .jm-accept{background:#0066cc;border:1px solid #0066cc}#jm20-consent .jm-reject{background:transparent;border:1px solid rgba(255,255,255,.55)}#jm20-consent .jm-more{background:none;border:none;text-decoration:underline;padding:0 4px;margin-left:auto;color:#d2d2d7}';
+        document.head.appendChild(st);
+      }
+      banner = document.createElement('div');
+      banner.id = 'jm20-consent'; banner.setAttribute('role', 'dialog'); banner.setAttribute('aria-modal', 'false');
+      banner.setAttribute('aria-labelledby', 'jm20-consent-title'); banner.setAttribute('aria-describedby', 'jm20-consent-body');
+      banner.innerHTML = '<strong id="jm20-consent-title" data-k="title"></strong><p id="jm20-consent-body" data-k="body"></p><div class="jm-row"><button type="button" class="jm-reject" data-k="reject"></button><button type="button" class="jm-accept" data-k="accept"></button><button type="button" class="jm-more" data-k="more"></button></div>';
+      banner.querySelector('[data-k=accept]').addEventListener('click', function () { decide('granted'); });
+      banner.querySelector('[data-k=reject]').addEventListener('click', function () { decide('denied'); });
+      banner.querySelector('[data-k=more]').addEventListener('click', function () { if (window.jm20GoPage) window.jm20GoPage('legal'); else window.location.href = (lang() === 'es' ? '/politica-de-privacidad' : '/privacy-policy'); });
+      banner.addEventListener('keydown', function (e) { if (e.key === 'Escape') decide('denied'); });
+      document.body.appendChild(banner);
+      paint();
+    }
+    window.jm20OpenConsent = show;
+    new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    function init() { var c = read(); if (c === 'granted') loadGA(); else if (c !== 'denied') show(); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+  </script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Terms of Service · JM20</title>
+<meta name="description" content="JM20 AI Solutions terms of service: services, ownership, payment, managed service, limitation of liability and termination."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://jm20aisolutions.com/terms-of-service"/>
+<link rel="alternate" hreflang="es" href="https://jm20aisolutions.com/terminos-de-servicio"/>
+<link rel="alternate" hreflang="en" href="https://jm20aisolutions.com/terms-of-service"/>
+<link rel="alternate" hreflang="x-default" href="https://jm20aisolutions.com/terms-of-service"/>
+<meta name="theme-color" content="#000000"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="JM20"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:locale:alternate" content="es_ES"/>
+<meta property="og:title" content="Terms of Service · JM20"/>
+<meta property="og:description" content="JM20 AI Solutions terms of service: services, ownership, payment, managed service, limitation of liability and termination."/>
+<meta property="og:url" content="https://jm20aisolutions.com/terms-of-service"/>
+<meta property="og:image" content="https://jm20aisolutions.com/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+
+<style>
+:root{--accent:#2997ff;--bg:#000;--ink:#f5f5f7;--muted:#9a9aa2;--line:#1d1d1f;--card:#0c0c0d}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"SF Pro Display",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.72;font-size:19px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:12px;top:-64px;z-index:100;background:#fff;color:#1d1d1f;padding:12px 18px;border-radius:980px;font-size:14px;text-decoration:none;transition:top .15s}
+.skip:focus{top:8px}
+.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.02em;text-decoration:none}
+.brand .jm{color:#c76b45}.brand .num{color:#2997ff}
+.bar nav{display:flex;gap:22px;align-items:center;font-size:14px}
+.bar nav a{color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;min-height:32px}
+.bar nav a:hover{color:var(--ink)}
+main{max-width:720px;margin:0 auto;padding:64px 24px 40px;outline:none}
+.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:0 0 18px}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;letter-spacing:-.025em;margin:0 0 20px;font-weight:800}
+.meta{font-size:14px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:0 0 40px}
+article h2{font-size:28px;line-height:1.2;letter-spacing:-.02em;margin:48px 0 14px;font-weight:700}
+.doc section:first-child h2{margin-top:0}
+article p{margin:0 0 22px}
+.see{margin:56px 0 0;color:var(--muted);font-size:16px}
+.see a{color:var(--ink)}
+footer{max-width:720px;margin:0 auto;padding:30px 24px 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+footer p{margin:0 0 10px}
+footer a{color:var(--muted)}
+.flinks{display:flex;flex-wrap:wrap;gap:4px 22px;list-style:none;margin:0;padding:0}
+.flinks a,.flinks button{display:inline-flex;align-items:center;min-height:32px;background:none;border:0;padding:0;font:inherit;color:var(--muted);cursor:pointer;text-decoration:underline}
+.flinks a:hover,.flinks button:hover{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.skip{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <a class="brand" href="/" aria-label="JM20"><span class="jm">JM</span><span class="num">20</span></a>
+  <nav aria-label="Navigation">
+    <a href="/terminos-de-servicio" lang="es" hreflang="es">Español</a>
+    <a id="back-link" href="/">← Site</a>
+  </nav>
+</header>
+<main id="main" tabindex="-1">
+  <article>
+    <p class="eyebrow">LEGAL</p>
+    <h1>Terms of Service</h1>
+    <p class="meta">Last updated: January 2026 · Governed by Spanish and EU law</p>
+    <div class="doc">
+      <section>
+        <h2>1. Services</h2>
+        <p>JM20 provides AI-powered customer support automation, analytics dashboards, and business intelligence tools for EU-based businesses. All services are delivered remotely and governed by a separate Statement of Work agreed between the parties.</p>
+      </section>
+      <section>
+        <h2>2. Ownership</h2>
+        <p>Upon completion and full payment, you own all workflows, database structures, and configurations we build for you. JM20 retains no proprietary rights over your implementation. You are free to modify, transfer, or discontinue use at any time.</p>
+      </section>
+      <section>
+        <h2>3. Payment</h2>
+        <p>Setup fees are invoiced upon project commencement (50%) and completion (50%). Monthly managed retainer fees are invoiced at the start of each calendar month. All prices are exclusive of applicable VAT.</p>
+      </section>
+      <section>
+        <h2>4. Managed Retainer</h2>
+        <p>The optional monthly retainer covers monitoring of n8n workflows and Supabase Edge Functions, LLM cost oversight, security reviews, and minor updates. It does not cover major new features or integrations, which are scoped and quoted separately.</p>
+      </section>
+      <section>
+        <h2>5. Limitation of Liability</h2>
+        <p>JM20's total liability for any claim arising from our services shall not exceed the total fees paid in the three months preceding the claim. We are not liable for indirect, consequential, or punitive damages.</p>
+      </section>
+      <section>
+        <h2>6. Termination</h2>
+        <p>Either party may terminate the managed retainer with 30 days written notice. Setup projects may not be cancelled once work has commenced without forfeiture of the initial 50% deposit.</p>
+      </section>
+    </div>
+    <p class="see">See also: <a href="/privacy-policy">Privacy policy</a></p>
+  </article>
+</main>
+<footer>
+  <p>© 2026 JM20 · <a href="/">jm20aisolutions.com</a></p>
+  <nav aria-label="Legal links">
+    <ul class="flinks">
+      <li><a href="/terms-of-service">Terms of service</a></li>
+      <li><a href="/privacy-policy">Privacy policy</a></li>
+      <li><button type="button" id="cookie-settings">Cookie settings</button></li>
+    </ul>
+  </nav>
+</footer>
+<script>document.getElementById('cookie-settings').addEventListener('click',function(){if(window.jm20OpenConsent)window.jm20OpenConsent();});</script>
+<script>(function(){
+  var NOAH='https://noah.jm20aisolutions.com', KEY='jm20_from_noah', st=window.sessionStorage, LEGAL=/\/(politica-de-privacidad|terminos-de-servicio|privacy-policy|terms-of-service)\/?$/;
+  function get(){try{return st.getItem(KEY)==='1'}catch(e){return false}}
+  function set(v){try{if(v)st.setItem(KEY,'1');else st.removeItem(KEY)}catch(e){}}
+  var ref=document.referrer;
+  if(ref){
+    if(ref.indexOf(NOAH)===0){set(true)}
+    else{try{var u=new URL(ref);if(u.origin!==location.origin||!LEGAL.test(u.pathname))set(false)}catch(e){}}
+  }
+  if(get()){var a=document.getElementById('back-link');if(a){a.href=NOAH+'/';a.textContent=document.documentElement.lang==='es'?'\u2190 Volver a Noah':'\u2190 Back to Noah'}}
+})();</script>
+</body>
+</html>
