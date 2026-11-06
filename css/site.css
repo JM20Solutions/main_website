@@ -6,6 +6,11 @@ body{font:400 17px/1.5 var(--f);color:var(--ink);background:#fff;-webkit-font-sm
 img{max-width:100%;height:auto;display:block}a{color:inherit}
 nav{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:24px;padding:0 max(20px,calc(50% - 540px));height:52px;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(20px);font-size:14px}
 nav img{height:22px}nav .sp{flex:1}nav a{text-decoration:none;color:var(--mut)}nav a:hover{color:var(--ink)}
+.navlinks{
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
 .btn{display:inline-block;padding:12px 24px;border-radius:980px;background:var(--b);color:#fff!important;font:600 16px var(--f);text-decoration:none;border:0;cursor:pointer;transition:background .2s,transform .2s}
 .btn:hover{background:#0077ed}.btn:active{transform:scale(.97)}.btn.s{background:transparent;color:var(--b)!important;border:2px solid var(--b);padding:10px 22px}.btn.s:hover{background:rgba(0,102,204,.08)}
 .d .btn.s{background:transparent;color:#2997ff!important;border-color:#2997ff}.d .btn.s:hover{background:rgba(41,151,255,.12)}.d .btn{background:#2997ff}
