@@ -33,3 +33,20 @@ $('#f').onsubmit=async e=>{e.preventDefault();const f=e.target,g=n=>f.elements[n
 const m=[g('m'),$('#cs').dataset.on?sum:''].filter(Boolean).join(' | ')+' (origin: main website EN)';
 try{const r=await fetch(U+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json',apikey:K,Authorization:'Bearer '+K,Prefer:'return=minimal'},body:JSON.stringify({full_name:g('n'),company:g('c'),email:g('e'),phone:g('p'),website:g('w'),interest:g('i'),comments:m.slice(0,1900)})});if(!r.ok)throw 0;st.textContent='Thank you. We will be in touch shortly.';f.reset()}catch(_){st.textContent='Could not send. Please try again or email us.'}};
 {const hv=$('#hv'),mob=matchMedia('(max-width:700px)').matches,n='hero-en'+(mob?'-m':'');hv.poster='../assets/img/'+n+'.jpg';hv.hidden=false;if(!matchMedia('(prefers-reduced-motion:reduce)').matches){hv.src='../assets/video/'+n+'.mp4';hv.play().catch(()=>{})}}
+// Mobile navigation
+const nav = document.querySelector('nav');
+const menuButton = document.getElementById('mnav');
+
+if (nav && menuButton) {
+  menuButton.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  nav.querySelectorAll('.navlinks a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
