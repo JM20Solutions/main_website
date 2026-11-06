@@ -5,3 +5,4 @@ README.md
 video-source
 node_modules
 .git
+worker.js
