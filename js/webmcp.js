@@ -147,13 +147,16 @@
     };
 
     const values = {};
+    const defaultedFields = [];
+    const errors = [];
 
     for (const [key, fallback] of Object.entries(defaults)) {
       const supplied = input[key];
+      if (supplied === undefined) defaultedFields.push(key);
       const value = supplied === undefined ? fallback : Number(supplied);
 
       if (!Number.isFinite(value) || value < 0) {
-        throw new Error(`${key} must be a non-negative number.`);
+        errors.push(`${key} must be a number of 0 or more (received ${supplied}).`);
       }
 
       values[key] = value;
@@ -167,9 +170,16 @@
     ];
 
     for (const key of percentageFields) {
-      if (values[key] > 100) {
-        throw new Error(`${key} cannot exceed 100.`);
+      if (Number.isFinite(values[key]) && values[key] > 100) {
+        errors.push(`${key} must be between 0 and 100 (received ${values[key]}).`);
       }
+    }
+
+    if (errors.length) {
+      return {
+        error: errors.join(" "),
+        note: "Nothing was calculated. Ask the user for corrected values. Do not invent numbers."
+      };
     }
 
     const calls =
@@ -196,11 +206,17 @@
 
     const monthlyTotal = calls + quotes + appointments + repetitiveWork;
 
+    const nothingSupplied = defaultedFields.length === Object.keys(defaults).length;
+
     return {
       currency: "EUR",
-      basis: isSpanish
-        ? "Estimación basada en los datos introducidos. No representa una pérdida verificada."
-        : "Estimate based on the supplied figures. It is not a verified loss.",
+      basis: nothingSupplied
+        ? (isSpanish
+            ? "Estimación con valores de ejemplo de la web. No se han proporcionado datos propios. No representa una pérdida verificada."
+            : "Estimate using the website's example values only. No figures were supplied. It is not a verified loss.")
+        : (isSpanish
+            ? "Estimación basada en los datos introducidos. Los campos de defaultedFields usan valores de ejemplo. No representa una pérdida verificada."
+            : "Estimate based on the supplied figures. Fields listed in defaultedFields use example values. It is not a verified loss."),
       monthly: {
         unansweredCalls: round2(calls),
         quotesWithoutFollowUp: round2(quotes),
@@ -209,7 +225,9 @@
         total: round2(monthlyTotal)
       },
       annualTotal: round2(monthlyTotal * 12),
-      inputsUsed: values
+      inputsUsed: values,
+      defaultedFields,
+      usedDefaults: defaultedFields.length > 0
     };
   }
 
