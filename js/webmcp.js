@@ -235,19 +235,42 @@
     const form = document.querySelector("#f");
 
     if (!form) {
-      throw new Error(
-        isSpanish
+      return {
+        error: isSpanish
           ? "No se ha encontrado el formulario de contacto en esta página."
-          : "The contact form was not found on this page."
-      );
+          : "The contact form was not found on this page.",
+        note: "Nothing was filled in. Tell the user the form is not available on this page."
+      };
     }
 
     const requiredFields = ["name", "company", "email"];
+    const missing = requiredFields.filter(
+      key => typeof input[key] !== "string" || !input[key].trim()
+    );
 
-    for (const key of requiredFields) {
-      if (typeof input[key] !== "string" || !input[key].trim()) {
-        throw new Error(`${key} is required.`);
-      }
+    if (missing.length) {
+      return {
+        error: `Missing required fields: ${missing.join(", ")}.`,
+        note: "Nothing was filled in. Ask the user for the missing details. Do not invent them."
+      };
+    }
+
+    const validInterests = [
+      "Discovery",
+      "Missed-opportunities",
+      "Customer-retention",
+      "Payments",
+      "Repetitive-work",
+      "Capacity",
+      "Profitability",
+      "Other"
+    ];
+
+    if (input.interest && !validInterests.includes(input.interest)) {
+      return {
+        error: `Invalid interest value "${input.interest}". Valid values: ${validInterests.join(", ")}.`,
+        note: "Nothing was filled in. Retry with a valid interest value or omit it."
+      };
     }
 
     const fieldMap = {
@@ -273,7 +296,10 @@
       const interestField = form.elements.namedItem("i");
 
       if (!interestField) {
-        throw new Error("The interest field was not found.");
+        return {
+          error: "The interest field was not found on the form.",
+          note: "Other fields were filled in, but the interest category could not be set."
+        };
       }
 
       const option = Array.from(interestField.options).find(
@@ -281,9 +307,10 @@
       );
 
       if (!option) {
-        throw new Error(
-          "Invalid interest value. Use one of the supported values."
-        );
+        return {
+          error: `Invalid interest value "${input.interest}". Use one of the supported values.`,
+          note: "Other fields were filled in, but the interest category could not be set."
+        };
       }
 
       interestField.value = input.interest;
