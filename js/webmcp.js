@@ -83,23 +83,69 @@
         }
       ];
 
-  const caseStudies = [
-    {
-      name: "Noah",
-      url: "https://noah.jm20aisolutions.com/",
-      description: isSpanish
-        ? "Demostración de Noah."
-        : "Noah demonstration."
-    },
-    {
-      name: "Murph",
-      url: "https://murph.jm20aisolutions.com/",
-      description: isSpanish
-        ? "Demostración de Murph y su ecosistema."
-        : "Murph and its ecosystem demonstration.",
-      related: ["Mowaat", "Iggy", "Sheetah"]
-    }
-  ];
+  const caseStudies = isSpanish
+    ? [
+        {
+          name: "Noah",
+          url: "https://noah.jm20aisolutions.com/",
+          description:
+            "Recepcionista de IA por voz para barberías, peluquerías y salones. Contesta las llamadas que el negocio no puede atender, consulta la disponibilidad real del calendario y reserva, cambia o cancela citas al momento. Incluye un panel donde se ven todas las reservas del equipo."
+        },
+        {
+          name: "Murph",
+          url: "https://murph.jm20aisolutions.com/",
+          description:
+            "Agente de IA de atención al cliente que responde con los datos reales del negocio (pedidos, facturación, inventario, cancelaciones e incidencias técnicas) por web, WhatsApp y Telegram. Mantiene el contexto de la conversación y, cuando no puede resolver algo, lo pasa a una persona con todo el contexto. Forma parte de un ecosistema de agentes.",
+          related: [
+            {
+              name: "Mowaat",
+              description:
+                "Panel de control con métricas en vivo: tickets, escalados, resolución por IA frente a personas y coste del uso de IA."
+            },
+            {
+              name: "Iggy",
+              description:
+                "Chat de IA integrado en el panel de Mowaat. Permite preguntar por cualquier gráfico o métrica y obtener el detalle."
+            },
+            {
+              name: "Sheetah",
+              description:
+                "Agente de datos que se conecta a la base de datos del negocio y responde preguntas en lenguaje natural, sin SQL ni migrar datos."
+            }
+          ]
+        }
+      ]
+    : [
+        {
+          name: "Noah",
+          url: "https://noah.jm20aisolutions.com/",
+          description:
+            "AI voice receptionist for barbershops, hair salons and similar businesses. It answers calls the business cannot take, checks real calendar availability, and books, changes or cancels appointments on the spot. Includes a dashboard showing all of the team's bookings."
+        },
+        {
+          name: "Murph",
+          url: "https://murph.jm20aisolutions.com/",
+          description:
+            "AI customer support agent that answers using the business's live data (orders, billing, inventory, cancellations and technical issues) on web, WhatsApp and Telegram. It keeps conversation context and, when it cannot resolve something, hands off to a person with the full context. Part of an ecosystem of agents.",
+          related: [
+            {
+              name: "Mowaat",
+              description:
+                "Dashboard with live metrics: tickets, escalations, AI-versus-human resolution and the cost of AI usage."
+            },
+            {
+              name: "Iggy",
+              description:
+                "AI chat built into the Mowaat dashboard. Ask about any chart or metric and get the detail behind it."
+            },
+            {
+              name: "Sheetah",
+              description:
+                "Data agent that connects to the business's database and answers questions in plain language, with no SQL and no data migration."
+            }
+          ]
+        }
+      ];
 
   const businessInfo = isSpanish
     ? {
