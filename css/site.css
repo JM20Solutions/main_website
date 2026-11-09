@@ -1,7 +1,7 @@
 :root{--ink:#1d1d1f;--mut:#6e6e73;--l:#f5f5f7;--b:#0066cc;--f:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif}
 @font-face{font-family:Inter;src:url(../assets/fonts/inter-400.woff2);font-weight:400;font-display:swap}
 @font-face{font-family:Inter;src:url(../assets/fonts/inter-600.woff2);font-weight:600;font-display:swap}
-*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:60px}
+*{box-sizing:border-box;margin:0}html{scroll-padding-top:60px}
 body{font:400 17px/1.5 var(--f);color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}a{color:inherit}
 nav{position:sticky;top:0;z-index:9;display:flex;align-items:center;gap:24px;padding:0 max(20px,calc(50% - 540px));height:52px;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(20px);font-size:14px}
