@@ -1,1 +1,12 @@
-
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "jm20-partner-info",
+      "type": "skill-md",
+      "description": "Use when a user or agent asks about JM20 AI Solutions (JM20): what the company offers, its public demos Noah and Murph, its AI-readiness checks, or how to contact it. Explains where to find accurate information and how to reach the company without inventing details.",
+      "url": "https://jm20aisolutions.com/.well-known/agent-skills/jm20-partner-info/SKILL.md",
+      "digest": "sha256:ff793f1485f55c22d510d9da64ef18fa9298c6b06be2b9b50967773d0df13d2c"
+    }
+  ]
+}
