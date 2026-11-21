@@ -1,0 +1,45 @@
+/* Noah demo inside the "Dos ejemplos de soluciones" section.
+   Everything is scoped under #noah so nothing else on the site is affected. */
+#noah{grid-column:1/-1}
+#noah .nd{background:#272729;border-radius:22px;padding:clamp(28px,4vw,48px);color:#fff;margin:8px 0 4px}
+#noah .nd-cap{font-size:17px;line-height:1.47;color:#ccc;text-align:center;margin:0 0 24px}
+#noah .nd-tabrow{display:flex;justify-content:center;margin-bottom:40px}
+#noah .nd-tabs{display:flex;background:rgba(255,255,255,.1);border-radius:9999px;padding:4px;gap:2px}
+#noah .nd-tab{white-space:nowrap;flex-shrink:0;min-height:36px;padding:0 20px;border-radius:9999px;border:none;background:transparent;color:#ccc;font:400 14px var(--f);letter-spacing:-.224px;cursor:pointer;transition:background .2s,color .2s}
+#noah .nd-tab:hover:not(.on){color:#fff}
+#noah .nd-tab:active{transform:scale(.95)}
+#noah .nd-tab.on{background:#0066cc;color:#fff}
+#noah .nd-outer{display:flex;gap:48px;align-items:center;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto}
+#noah .nd-pic{display:none;width:340px;height:340px;max-width:100%;object-fit:cover;border-radius:28px;box-shadow:rgba(0,0,0,.22) 3px 5px 30px 0;flex-shrink:0}
+#noah .nd-pic.on{display:block}
+#noah .nd-panel{width:min(420px,100%);background:#000;border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;color-scheme:dark;color:#fff;text-align:left}
+#noah .nd-head{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.12)}
+#noah .nd-title{font:600 17px/1.24 var(--f);letter-spacing:-.374px}
+#noah .nd-head p{font-size:14px;line-height:1.43;letter-spacing:-.224px;color:#ccc;margin:2px 0 0}
+#noah .nd-transcript{padding:20px;display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;position:relative;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+#noah .nd-transcript:focus-visible{outline:2px solid #2997ff;outline-offset:2px}
+#noah .nd-line{font-size:14px;line-height:1.43;letter-spacing:-.224px;padding:9px 14px;max-width:88%;transition:opacity .35s}
+#noah .nd-line.caller{align-self:flex-start;background:#2a2a2c;color:#fff;border-radius:18px 18px 18px 5px}
+#noah .nd-line.agent{align-self:flex-end;background:#0066cc;color:#fff;border-radius:18px 18px 5px 18px}
+#noah .nd-transcript.sync .nd-line{display:none}
+#noah .nd-transcript.sync .nd-line.shown{display:block}
+#noah .nd-transcript.sync .nd-line.agent.shown{animation:ndInAgent .45s cubic-bezier(.22,1,.36,1) both}
+#noah .nd-transcript.sync .nd-line.caller.shown{animation:ndInCaller .45s cubic-bezier(.22,1,.36,1) both}
+#noah .nd-transcript.sync .nd-line.past{opacity:.5}
+#noah .nd-audio{padding:12px 20px;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:12px}
+#noah .nd-audio span{font-size:12px;letter-spacing:-.12px;color:#ccc;white-space:nowrap}
+#noah .nd-audio audio{flex:1;min-width:0;height:32px;accent-color:#2997ff}
+#noah .nd-err{padding:10px 20px;font-size:14px;line-height:1.43;color:#ff9f0a;border-top:1px solid rgba(255,255,255,.12);margin:0}
+@keyframes ndInAgent{from{opacity:0;transform:translateX(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes ndInCaller{from{opacity:0;transform:translateX(-18px) scale(.96)}to{opacity:1;transform:none}}
+@media (max-width:735px){
+  #noah .nd{padding:28px 16px}
+  #noah .nd-tabs{max-width:100%}
+  #noah .nd-tab{padding:0 12px}
+  #noah .nd-pic{width:min(340px,100%);height:auto;aspect-ratio:1}
+}
+@media (max-width:420px){
+  #noah{padding:24px 14px}
+  #noah .nd{padding:24px 10px}
+  #noah .nd-tab{padding:0 9px;font-size:13px}
+}
