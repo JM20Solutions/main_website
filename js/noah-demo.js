@@ -27,7 +27,7 @@
     },
     reschedule: {
       title: {es:'Cambio de cita', en:'Reschedule'},
-      sub: {es:'Corte de cabello · Movida al jueves, 18:00', en:'Haircut · Moved to Thursday, 6:00 PM'},
+      sub: {es:'Corte de cabello · Movida al viernes, 14:00', en:'Haircut · Moved to Friday, 2:00 PM'},
       src: 'reschedule.mp3',
       lines: [
         {who:'agent', text:'Hola, soy Noah la asistente de IA de JM20, te puedo ayudar para agendar, cambiar o cancelar una reservacion. En que te puedo ayudar hoy?'},
