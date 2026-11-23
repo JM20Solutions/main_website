@@ -11,19 +11,15 @@ const C=[['Llamadas y mensajes sin contestar','Clientes que escriben o llaman y 
 ['Presupuestos sin seguimiento','Presupuestos enviados que nadie retoma.',['Sin retomar al mes',10],['Habrían aceptado (%)',20],['Valor medio (€)',400],(a,b,c)=>a*b/100*c,'Presupuestos potencialmente no convertidos al mes'],
 ['Citas a las que no vienen','Huecos que se pierden porque el cliente no aparece.',['No-shows al mes',12],['Recuperable (%)',50],['Precio por cita (€)',25],(a,b,c)=>a*b/100*c,'Capacidad que podría recuperarse al mes'],
 ['Trabajo repetitivo','Horas tuyas en tareas que una máquina puede hacer.',['Horas por semana',6],['Automatizable (%)',60],['Coste de tu hora (€)',15],(a,b,c)=>a*4.33*b/100*c,'Coste estimado del tiempo automatizable al mes']];
-// Calculator: example values are placeholders (not real input). A leak counts only when its 3 fields are filled.
-$('#cal').innerHTML=C.map((c,i)=>`<div class="c"><h4>${c[0]}</h4><p>${c[1]}</p>${[2,3,4].map(j=>`<label>${c[j][0]}<input type="number" min="0"${/%/.test(c[j][0])?' max="100"':''} inputmode="decimal" placeholder="${c[j][1]}" data-i="${i}"></label>`).join('')}<b id="r${i}" aria-hidden="true">—</b><small>${c[6]}</small></div>`).join('');
-let tm=0,sum='',has=false;const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-const rd=()=>{const v=[...document.querySelectorAll('#cal .c')].map((el,i)=>{const xs=[...el.querySelectorAll('input')];if(xs.some(x=>x.value===''))return null;const n=xs.map(x=>Math.min(x.max?+x.max:Infinity,Math.max(0,+x.value||0)));return C[i][5](...n)});
-v.forEach((x,i)=>$('#r'+i).textContent=x===null?'—':eur(x));const t=v.reduce((a,b)=>a+(b||0),0);has=v.some(x=>x!==null);
-const out=(m,y)=>{$('#tm').textContent=m;$('#ty').textContent=y};
-if(!has){tm=0;out('—','—');$('#trs').textContent='';sum='';return}
-const a=tm,s=performance.now();tm=t;
-const step=n=>{const k=rm?1:Math.min(1,(n-s)/400),e=a+(t-a)*(1-Math.pow(1-k,3));out('hasta '+eur(e),'hasta '+eur(e*12));if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
-$('#trs').textContent='Estimación: hasta '+eur(t)+' al mes, hasta '+eur(t*12)+' al año.';
-sum='Calculadoras (estimación): '+C.map((c,i)=>v[i]===null?'':c[0]+' '+eur(v[i])+'/mes').filter(Boolean).join('; ')+'. Total hasta '+eur(t)+'/mes, '+eur(t*12)+'/año.'};
+$('#cal').innerHTML=C.map((c,i)=>`<div class="c"><h4>${c[0]}</h4><p>${c[1]}</p>${[2,3,4].map(j=>`<label>${c[j][0]}<input type="number" min="0"${/%/.test(c[j][0])?' max="100"':''} inputmode="decimal" value="${c[j][1]}" data-i="${i}"></label>`).join('')}<b id="r${i}" aria-hidden="true"></b><small>${c[6]}</small></div>`).join('');
+let tm=0,sum='';const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const rd=()=>{const v=[...document.querySelectorAll('#cal .c')].map((el,i)=>{const n=[...el.querySelectorAll('input')].map(x=>Math.min(x.max?+x.max:Infinity,Math.max(0,+x.value||0)));return C[i][5](...n)});
+v.forEach((x,i)=>$('#r'+i).textContent=eur(x));const t=v.reduce((a,b)=>a+b,0);const a=tm,s=performance.now();tm=t;
+const step=n=>{const k=rm?1:Math.min(1,(n-s)/400),e=a+(t-a)*(1-Math.pow(1-k,3));$('#tm').textContent=eur(e);$('#ty').textContent=eur(e*12);if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step);
+const trs=$('#trs');if(trs)trs.textContent='Estimación: '+eur(t)+' al mes, '+eur(t*12)+' al año.';
+sum='Calculadoras (estimación): '+C.map((c,i)=>c[0]+' '+eur(v[i])+'/mes').join('; ')+'. Total '+eur(t)+'/mes, '+eur(t*12)+'/año.'};
 $('#cal').addEventListener('input',rd);rd();
-document.querySelector('[data-calc]').addEventListener('click',()=>{if(!has)return;$('#cs').textContent='Incluiremos los resultados de tus calculadoras con tu consulta.';$('#cs').dataset.on=1});
+document.querySelector('[data-calc]').addEventListener('click',()=>{$('#cs').textContent='Incluiremos los resultados de tus calculadoras con tu consulta.';$('#cs').dataset.on=1});
 const D=[['Un cliente solicita un presupuesto','Qué servicio pide el cliente','Medidas, plazo y datos de contacto','Registra la oportunidad y programa el seguimiento comercial','Ningún presupuesto se queda sin respuesta'],
 ['Recibes una factura de un proveedor','Que es una factura de proveedor','Importe, fecha, proveedor y número','Extrae los datos y comprueba posibles duplicados','Información lista para tu programa de contabilidad'],
 ['Un cliente quiere cambiar una cita','Que quiere mover su cita','La disponibilidad de la agenda','Ofrece alternativas y actualiza la agenda al confirmar','Agenda al día sin llamadas cruzadas'],
