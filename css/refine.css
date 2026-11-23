@@ -1,0 +1,29 @@
+/* Loaded after site.css. Contrast, focus, tap targets and the shorter contact form. */
+
+/* Focus: #2997ff on white is only ~3:1, so use the darker blue on light sections */
+:focus-visible{outline-color:#0066cc}
+.d :focus-visible{outline-color:#2997ff}
+
+/* Buttons: white on #2997ff was ~3.0:1 (needs 4.5:1). #0071e3 is ~4.7:1 */
+.btn:hover{background:#0058b0}
+.d .btn:not(.s){background:#0071e3}
+.d .btn:not(.s):hover{background:#0066cc}
+
+/* Nav tap targets */
+.navlinks a:not(.btn){padding:14px 4px}
+@media(max-width:760px){
+  .navlinks{gap:0}
+  .navlinks a:not(.btn){padding:12px 0}
+}
+
+/* Slightly larger form labels */
+label{font-size:14px}
+
+/* Screen-reader-only text (calculator total announcement) */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Optional contact fields */
+.more{margin-top:10px}
+.more summary{cursor:pointer;color:#f5f5f7;font-size:15px;padding:10px 0}
+.more[open] summary{margin-bottom:4px}
+.nxt{font-size:14px;color:#a1a1a6;margin-top:14px;max-width:52ch}
